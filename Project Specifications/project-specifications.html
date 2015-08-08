@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- For mobile viewing -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin-bottom: 50px;
+        }
+
+        .img-responsive {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 30px;
+        }
+
+        h4 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div>
+        <img class="img-responsive center-block" src="assignment_spec_images/buggui.png" alt=""/>
+    </div>
+    <h1>CS349 Assignment 3</h1>
+    <strong><em>Due: Friday, March 13, 2015, 5PM EST</em></strong>
+
+    <div>
+        <h2>Assignment Goals</h2>
+
+        <p>
+            The goals of this assignment are to give you an opportunity to gain experience with affine transforms and
+            scene graphs, and in designing and implementing interactions that make use of these
+            techniques.
+        </p>
+    </div>
+
+    <div>
+
+        <h2>Assignment Overview</h2>
+
+        <p>
+            In this assignment, you will create a buggy (car) that the user can directly manipulate.
+            Specifically, they will be able to:
+        </p>
+        <ul>
+            <li>Position it on the screen by selecting it and dragging it with a pointer,</li>
+            <li>Rotate it about its center by dragging the mouse pointer,</li>
+            <li>Make it wider or longer by interactively manipulating control points on the car,</li>
+            <li>Make the axles longer by interactively pulling the tires out, and</li>
+            <li>Turn the car's front wheels by dragging them with the mouse.</li>
+        </ul>
+
+        <p>
+            You will render the car using an overhead view:
+            <img src="assignment_spec_images/buggui_overhead.png" class="center-block img-responsive"/>
+            You do not need to make the car "drive" on its own, though you may certainly provide this functionality, if
+            you wish.
+        </p>
+
+        <p>
+            <strong><em>
+                For this assignment, you cannot use any third-party HTML, JavaScript, CSS, or code-generation
+                utilities, with the exception of CSS preprocessors and the code provided. You must create all
+                HTML, JavaScript, and CSS on your own.
+            </em></strong>
+        </p>
+
+    </div>
+
+    <div>
+        <h2>
+            Buggui!: Interaction Design
+        </h2>
+
+        <h3>
+            Canvas Size
+        </h3>
+
+        <p>
+            For this assignment, you will use an HTML 5 canvas with a size of 800x600 pixels.
+        </p>
+
+        <h3>
+            Moving, Resizing, and Rotating the Car
+        </h3>
+
+        <p>
+            The user can directly interact with the car in a number of ways. At the most basic level, they can select
+            the car with the pointer and interactively drag it around the screen. They can also rotate the car by
+            clicking
+            and dragging on the front or back part of the car (but not the bumper). The car should rotate about its
+            center.
+        </p>
+
+        <p>
+            The user can select the front or rear bumper to change the length of the car. However, they may only
+            adjust the length within the limits specified below. Similarly, users can click on
+            the left or right side of the car to make it wider or narrower (within limits).
+        </p>
+
+        <p>
+            Resizing the car should uniformly scale the car in the given dimension. For example, if they select
+            the front bumper and extend it, it should also extend the back bumper. Similarly, resizing the left
+            side of the car should simultaneously resize the right side of the car.
+            In essence, you can think of the resizing operation as
+            scaling the car about its center, along one dimension or the other (i.e., its length or its width).
+        </p>
+
+        <p>
+            You should provide clear affordances for resizing and rotating the car. That is, the car's design or
+            the interface should
+            clearly communicate to the user that they can manipulate the car's length and width, or that they
+            can rotate the car. This design should
+            be elegant and intuitive. Test with others to ensure you have a good design.
+        </p>
+
+        <h3>
+            Interacting with the Tires and Axles
+        </h3>
+
+        <p>
+            Users can directly select any of the four tires with a pointer. When they select a tire, they
+            can pull them in and out from the car, effectively making the axles longer or shorter. When pulling a
+            tire out, all four tires should simultaneously respond.
+        </p>
+
+        <p>
+            Finally, when the user selects either front tire, they can swivel them left or right, as if the
+            steering wheel was being turned.
+        </p>
+
+    </div>
+
+    <div>
+        <h3>
+            Limits
+        </h3>
+
+        <p>
+            When the user interacts with the car, its properties must stay within the following constraints:
+        </p>
+
+        <ul>
+            <li>
+                Car length: minimum of 50 pixels, maximum of 200 pixels
+            </li>
+            <li>
+                Car width: minimum of 25 pixels, maximum of 150 pixels
+            </li>
+            <li>
+                Axle widths: The axle width should never be so small that the tires are not visible or selectable.
+                The maximum axle width beyond the side of the car is 75 pixels. The axel width should remain
+                fixed during resizing of the width or length of the car. Axel width is defined as the distance
+                from the side of the car to the center of a tire.
+            </li>
+            <li>
+                Steering the front tires: The front tires may turn no more than 45 degrees in either direction from
+                a starting, neutral position (i.e., where they are not turned at all). This gives them a total of
+                90 degrees of steering range.
+            </li>
+        </ul>
+
+        <p>
+            The objects' locations on the car should meet the following specifications:
+        </p>
+
+        <ul>
+            <li>
+                The axles should be positioned at points that are fixed distances from the top and bottom bumpers.
+                This distance from the top and bottom bumpers should be constant, regardless of the length or width
+                of the car (even as the user resizes the car's length or width).
+            </li>
+            <li>
+                The tires' centers should be at the end of the axles. Keep in mind that you will also need to consider
+                the orientation of tires, since the left and right tires naturally face in different directions.
+            </li>
+        </ul>
+
+    </div>
+
+    <div>
+        <h2>
+            Constructing the Car Using a Scene Graph
+        </h2>
+
+        <p>
+            As mentioned above, you will represent the buggy using an overhead view. You will use a <em>scene graph</em>
+            to represent the different parts of the buggy.
+        </p>
+
+        <p>
+            A scene graph is very similar to an interactor tree: You have a root node, child nodes, and so on.
+            Each node's location on the screen is described relative to its parent node (with the exception of
+            the root node).
+        </p>
+
+        <p>
+            In this assignment, you will have a root node representing the scene and background, a child representing
+            the car body,
+            child nodes of the car representing the axles, and tires that are children of the axles. You may also find
+            it useful to have separate nodes representing the front and back of the car, and/or the bumpers, too,
+            to support the various interactions required.
+        </p>
+
+        <p>
+            Each node in the scene graph maintains an affine transform that describes its location, orientation, and
+            size, relative to
+            its parent. This transform will be applied prior to the object painting itself, allowing the object to
+            paint itself in it own, local coordinate system. (Note that <em>you</em> will
+            need to ensure that this transform is properly applied to the context prior to rendering commencing.)
+            Using this architecture, nodes will paint themselves under the following
+            assumptions:
+        </p>
+
+        <ul>
+            <li>
+                The car body should paint itself so that its center is at the origin, the headlights are in the
+                direction of the positive y axis, and the tail lights in the direction of the negative y axis.
+            </li>
+            <li>
+                The axles should paint themselves so their center is at the origin, and the axles lie along the x axis.
+                The right axle should be in the direction of the positive x axis.
+            </li>
+            <li>
+                The tires should paint themselves with their center at the origin, and the "outside" of the tire (the
+                side facing outside, rather than towards the car) is on the right side of the tire (in the direction
+                of the positive x axis). Note that this means tires must also maintain information about whether they
+                are on the right or left side of the car, so that a rotation transform can be applied, as necessary.
+            </li>
+        </ul>
+
+        <p>
+            As mentioned above, each node will maintain an affine transform relative to its parent, which will be
+            concatenated with the current transform (and applied to the context), before the node paints.
+        </p>
+
+        <p>
+            These transforms merely set up the canvas for the individual parts to paint themselves. However, the
+            individual
+            parts may be further transformed by user interaction. As an example, the front tires can be steered left and
+            right.
+            You will want to track this transform separately from the other transforms (the provided source code is
+            already
+            set up to support this).
+        </p>
+    </div>
+
+    <div>
+        <h2>
+            Implementation Details and Requirements
+        </h2>
+
+        <p>
+            <strong><em>
+                You must use affine transforms to manipulate the context when rendering the scene graph
+                to the screen, and you must use affine transforms to perform hit testing (i.e.,
+                to determine what the user is attempting to select when they press the mouse button). You must
+                also create your car by constructing a scene graph, using the provided classes as a base.
+            </em></strong>
+        </p>
+
+        <p>
+            You can assume that this application will be used on a traditional desktop (or laptop) computer with
+            a dedicated pointing device (like a mouse or trackpad). <em><strong>You do not need to support
+            mobile devices, or devices with small screens (thus, you do not need to worry about responsive
+            design). Your application only needs to work on a traditional computer.</strong></em>
+        </p>
+
+
+        <h3>
+            Supporting Interaction Using Affine Transforms and the Scene Graph
+        </h3>
+
+        <p>
+            While affine transforms may, at first, seem difficult, once you master them, this assignment will be
+            rather straightforward.
+        </p>
+
+        <p>
+            The key to using affine transforms in this assignment is to know that you (generally) concatenate
+            the affine transform of each node to the current transform, as you descend the scene graph.
+            Thus, you're typically saving the current context, grabbing a node's affine transform, concatenating it to
+            the current transform,
+            rendering, and then recursively doing the same for each child. When you're done with each node,
+            you'll restore the saved context.
+        </p>
+
+        <p>
+            We write "generally" and "typically" because if you leave a scaling transform intact, it will scale every
+            child
+            node thereafter, so you will generally not keep a scaling transform in place.
+        </p>
+
+        <p>
+            One of the most important things to keep in mind is that the affine transforms and their inverses
+            enable you to move between local and global (screen) coordinates. For example,
+            given a transform to render the car to the screen, its inverse can be used to turn
+            mouse events back into the model's original coordinate system (as long as the original transform doesn't do
+            something
+            like scale by 0).
+        </p>
+
+        <p>
+            To assist with using affine transforms,
+            we are providing an <a
+                href="http://docs.closure-library.googlecode.com/git/class_goog_graphics_AffineTransform.html">
+            affine transform module</a> from <a href="http://docs.closure-library.googlecode.com/git/index.html">Google's
+            Closure library</a>. This module makes it relatively easy to create affine transforms and concatenate
+            matrices. Note, however, that you will also need to interface with the 2D context object of the HTML 5
+            canvas, so you will be working with affine transforms in two contexts: when rendering
+            using the context object, and Google's affine transforms when interpreting input. Again, this is
+            rather straightforward once you are comfortable with affine transforms.
+        </p>
+
+        <h3>Resizing the Buggy Using Affine Transforms</h3>
+
+        <p>
+            The assignment requires you to support resizing the car. There are several ways to implement this. The
+            one you choose will depend on how you decide to render the car itself.
+        </p>
+
+        <p>
+            One way to render the car is to have a graphic for the car, which is then scaled. This simply requires
+            you to scale the context prior to painting the graphic. The drawback to this approach, as noted above, is
+            that you can't keep that scaling transform in place as you descend the scene graph and paint children,
+            because they, too, will then be scaled. Despite this drawback, scaling the context to properly stretch
+            the car is a fine strategy to employ.
+        </p>
+
+        <p>
+            Another way to render the car is to paint it using standard drawing operations (as opposed to using an image
+            prepared ahead of time). For example, you could
+            calculate the scaled dimensions of the car, and fill a rectangle of that size, without applying a scaling
+            transform. However, you will still want to use affine transforms to represent
+            these transformations, to make it easy to perform hit detection later.
+        </p>
+
+        <p>
+            You may find the clip to be useful when drawing your car. See <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Compositing">
+            https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Compositing</a> for more details. The
+            clip
+            grants you more control in painting different shapes.
+        </p>
+
+        <h3>
+            Hit Detection
+        </h3>
+
+        <p>
+            Hit detection is the process of determining whether the user's cursor is within a specific object
+            in the scene. The complication, of course, is that the canvas's context will undergo several
+            transformations as it descends the scene graph to paint children.
+        </p>
+
+        <p>
+            Accordingly, as covered in class, what you'll need to do for every node is perform an inverse
+            transformation of the screen coordinate to the object's local coordinate system, to see whether it
+            falls within the object. <strong>While there are many other ways you could perform hit detection, this is
+            the
+            method you must implement for this assignment.</strong>
+        </p>
+
+        <h3>
+            Rotation
+        </h3>
+
+        <p>
+            To determine rotation (for example, to allow the user to interactively turn the car's front wheels when
+            they select them and drag the mouse), you will need to determine the change in angle from the time
+            the user presses the mouse button. You will find
+            the atan2 method of Javascript's built-in Math object useful for this.
+        </p>
+
+        <h3>
+            Files
+        </h3>
+
+        <p>
+            <a href="buggui.html">buggui.html</a> is the web page for your application, with
+            <a href="js/buggui.js">buggui.js</a> the application's main entry point. <a href="js/scene_graph.js">scene_graph.js</a>
+            should house your scene graph code. You should place all of your CSS in <a
+                href="css/buggui.css">buggui.css</a>.
+        </p>
+
+        <p>
+            In contrast with previous assignments, you do not need to make a strict separation of model and view code.
+            Instead, you can respond to all input at a global level, rather than a local, widget/component-level.
+            However, you will still need to use the scene graph and affine transforms to do things like render
+            objects and perform hit detection.
+        </p>
+
+        <p>
+            Despite there not being a strict separation of model and view, you still need to make your architecture
+            modular. In particular, you will need to follow the class specifications given, so we can swap out
+            objects representing different car parts.
+        </p>
+
+        <h3>Marking Button and Unit Tests</h3>
+
+        <p>
+            You'll note in the HTML that we include a marking button and a link to unit tests. Neither
+            of these should be altered or removed. They will allow us to programmatically test and manipulate
+            your application for marking purposes.
+        </p>
+
+        <h2>Bugs</h2>
+
+        <p>
+            As with any software, there are bound to be bugs in the code, and ambiguities in
+            the specifications. We will respond to any bugs or questions and offer corrections
+            and clarifications as needed.
+        </p>
+
+    </div>
+
+    <div>
+        <h2>
+            Testing
+        </h2>
+
+        <p>
+            To unit test assignments, we will be using <a href="http://mochajs.org/">Mocha</a>,
+            <a href="http://chaijs.com/">Chai</a>, <a href="http://sinonjs.org/">Sinon</a>, and
+            <a href="https://github.com/domenic/sinon-chai">Sinon-Chai</a>. All of the components
+            necessary to do unit testing are included.
+        </p>
+
+        <h3>How to Run the Unit Tests</h3>
+
+        <p>
+            When loaded, the <a href="unit_tests.html">unit_tests.html</a> file will execute the unit tests found in
+            <a href="js/unit_tests/provided_unit_tests.js">provided_unit_tests.js</a> and
+            <a href="js/unit_tests/marking_unit_tests.js">marking_unit_tests.js</a>. There is a link in
+            the web app's page to go to this unit test. This link should remain within the code, so TAs can
+            easily execute your unit tests.
+        </p>
+
+        <p>
+            <em>You must create at least 5 unit tests for this assignment that validate your scene graph and software
+                architecture</em>. Add these unit tests in <code>provided_unit_tests.js</code>, and ensure they execute
+            properly and
+            without error!
+        </p>
+
+        <p>
+            The <code>marking_unit_tests.js</code> file is empty: Do not add anything to this. It will be overwritten
+            with our own
+            unit tests at marking time, to further test your code.
+        </p>
+
+        <h3>What We Will Test for Marking</h3>
+
+        <p>
+            We will be testing your scene graph to ensure it works as specified. For example, for this assignment, we
+            may
+            change the tire nodes with our own, or validate that affine transforms are correctly specified throughout
+            the scene graph.
+        </p>
+    </div>
+
+    <div>
+        <h3>Assignment Constraints</h3>
+
+        <p>
+            You must complete the assignment within the following constraints:
+        </p>
+
+        <ul>
+
+            <li>You must use only HTML, JavaScript and CSS that you, yourself, have created.
+                <em>You may not use any other third-party JavaScript or CSS files for this assignment, including
+                    web frameworks and code generation tools (with the exception of CSS preprocessors, though
+                    you won't really have much use for them in this assignment).</em> However, we have included
+                underscore.js
+                and Google Closure's affine transforms for you to use.
+            </li>
+
+            <li>
+                This is a single-page web application: <em>there should be only one web page that the user loads
+                and interacts with -- they should never leave it</em> (with the exception of the unit tests).
+                <em>We will take off significant marks if you redirect the user to another page.</em>
+            </li>
+
+            <li>
+                All of your JavaScript files should work with (and include) <code>'use strict';</code>.
+            </li>
+
+            <li>
+                You must use the convention in the code of creating functions that return your classes, to
+                create modules.
+            </li>
+
+            <li>
+                You may use <em>code snippets</em> from third-party sources, but no external libraries (HTML, JS,
+                or CSS), or external code-generation tools. You must cite the use of any
+                third-party code (including a URL if the example was obtained online).
+            </li>
+
+            <li>
+                Your assignment may not make use of any external files loaded over the Internet. It will be
+                tested locally, in offline mode.
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Marking</h2>
+
+        <p>
+            To receive a great mark, you must implement the system as described above, under the given constraints,
+            with all unit tests passing, while having an aesthetically pleasing design and a great user experience.
+        </p>
+
+        <p>
+            Note this assignment provides less guidance on the ultimate interface and interaction design: You may find
+            that you need to spend more time on these aspects than in previous assignments.
+        </p>
+
+        <p>
+            TAs will mark your assignment using the latest version of Chrome on whatever platform
+            they use on a daily basis. In theory, the specific platform shouldn't matter. If we
+            find platform differences, we'll handle them as they arise. They will mark the assignment
+            in "offline" mode (i.e., with no access to the Internet).
+        </p>
+
+    </div>
+
+    <div>
+        <h2>How to Submit</h2>
+        You will use subversion to both check out and submit your assignment. Details can be found on the
+        <a href="https://hci.cs.uwaterloo.ca/courses/CS349/w15/about.html#svn">course website</a>.
+    </div>
+
+</div>
+
+</body>
+</html>
+

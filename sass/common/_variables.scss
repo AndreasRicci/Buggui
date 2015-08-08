@@ -1,0 +1,16 @@
+// Some global variables
+
+$pageMinWidth: 830px;
+// Page will shrink down until this width
+$pageMaxWidth: 830px;
+// Page will expand up until this width
+$contentMaxWidth: $pageMaxWidth;
+// Content will expand up until this width
+$contentSpacing: 10px;
+// Margin/padding around various pieces of content
+$num-grid-cols: 12;
+// How many columns do we want our grid to have?
+$grid-max-width: $pageMaxWidth;
+// How large should our grid expand to be?
+$grid-gutter-width: $contentSpacing;
+// Space out grid columns

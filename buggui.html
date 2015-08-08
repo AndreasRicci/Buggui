@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buggui - Drive in style!</title>
+
+    <link rel="stylesheet" href="css/buggui.css"/>
+</head>
+<body>
+<div class="page">
+    <div class="row">
+        <div class="col title">
+            <h1>Buggui</h1>
+
+            <h2>Drive in style - have fun by manipulating the car below!</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="instructions">
+                <h2>Instructions</h2>
+
+                <p> You can play around with the buggy car below in the following ways: </p>
+                <ul>
+                    <li><strong> Position it </strong> on the screen by clicking and dragging the mouse pointer from its
+                        center
+                    </li>
+                    <li><strong> Rotate it </strong> about its center by dragging from its hood or trunk areas</li>
+                    <li><strong> Resize it </strong> by dragging from its bumpers or sides</li>
+                    <li><strong> Shrink or grow its axles uniformly </strong> by dragging to pull a tire in or out</li>
+                    <li><strong> Steer its front wheels </strong> by dragging from the top of either of them</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col" id="app-container">
+            <div class="row scene-graph-canvas-container">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="canvas-toolbar">
+                                <button class="button random-button"> I'm feeling lucky, give me a random car</button>
+                                <button class="button reset-button"> Reset car</button>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="scene-graph-canvas" height="600" width="800">
+                        Error: Your browser does not support the HTML5 canvas!
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col" id="unit-tests">
+            <button class="button marking-button"><span class="icon-checkmark"></span> Mark Me!</button>
+            <a class="button" href="unit_tests.html"><span class="icon-cog"></span> Run Unit Tests </a>
+        </div>
+    </div>
+</div>
+
+<script src="js/ext/underscore.js"></script>
+<script src="js/ext/affinetransform.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/scene_graph.js"></script>
+<script src="js/buggui.js"></script>
+<script src="js/markers_code.js"></script>
+
+</body>
+</html>

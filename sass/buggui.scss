@@ -1,0 +1,165 @@
+// Imports
+@import "common/variables";
+@import "common/utils";
+@import "common/colours";
+@import "common/typography";
+@import "common/buttons";
+@import "common/reset";
+
+body {
+  @include baseTypeset();
+  color: $colourText;
+  word-wrap: break-word;
+  background: #d3d3cf;
+}
+
+h1 {
+  @include msText($ms5);
+  font-weight: normal;
+  margin: 0;
+}
+
+h2 {
+  @include msText($ms2);
+  color: $colourNeutralDark;
+  font-weight: normal;
+  margin: 0;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+em, i {
+  font-style: italic;
+}
+
+p {
+  margin-bottom: $contentSpacing;
+}
+
+small {
+  @include msText($ms-2);
+}
+
+a {
+  text-decoration: none;
+  color: $colourLink;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Helper class to hide elements
+.hide {
+  display: none !important;
+}
+
+// Container for all content
+.page {
+  @include box-shadow();
+  @include border-radius(10px);
+  width: 95%;
+  min-width: $pageMinWidth;
+  max-width: $pageMaxWidth;
+  position: relative;
+  margin-top: $contentSpacing * 2;
+  margin-bottom: $contentSpacing * 2;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: $colourTextInverse;
+  border: solid 3px #9e9e99;
+}
+
+.title {
+  @include clearfix();
+  font-weight: bold;
+  float: left;
+  padding-bottom: $contentSpacing;
+  border-bottom: 2px solid $colourNeutral;
+
+  h1 {
+    display: inline-block;
+    margin-right: $contentSpacing;
+  }
+
+  h2 {
+    display: inline-block;
+  }
+}
+
+input[type=submit], input[type=reset], input[type=button], button, a.button {
+  @include baseButtonTypeset();
+  @include buttonLookNormal();
+  @include border-radius();
+  display: inline-block;
+  text-decoration: none !important;
+  cursor: pointer;
+  text-align: center;
+  zoom: 1;
+  overflow: visible;
+  padding: $contentSpacing / 2 $contentSpacing;
+
+  &:hover {
+    @include buttonLookHover();
+  }
+
+  &:active {
+    @include buttonLookActive();
+  }
+}
+
+.marking-button {
+  float: right;
+}
+
+#unit-tests {
+  @include clearfix();
+  padding-top: $contentSpacing;
+  border-top: 2px solid $colourNeutral;
+}
+
+.scene-graph-canvas-container {
+  > .col {
+    text-align: center;
+
+    #scene-graph-canvas {
+      @include disableTextSelection();
+      border: 2px solid grey;
+    }
+  }
+}
+
+.instructions {
+  padding: $contentSpacing;
+  background-color: $colourNeutralBright;
+  border: 2px solid $colourNeutral;
+}
+
+.canvas-toolbar {
+  padding: $contentSpacing / 2;
+  background-color: $colourNeutralBright;
+  border: 2px solid grey;
+  border-bottom: none;
+  float: right;
+  text-align: left;
+}
+
+ul {
+  margin-left: $contentSpacing * 2;
+  list-style-type: disc;
+
+  li {
+    display: list-item;
+  }
+}
+
+// Grid rows
+.row {
+  @include row();
+}
+
+.col {
+  @include column();
+}
